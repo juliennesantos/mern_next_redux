@@ -1,16 +1,20 @@
 const express = require('express');
-const { users } = require('../database/models');
+const { Users } = require('../database/models');
 const jwt = require('jsonwebtoken');
 
 module.exports = (router) => {
   const userRouter = express.Router();
 
-  userRouter.get('/:id', (req, res) => users.findByPk(req.params.id).then(user => user ? res.json(user) : res.sendStatus(404)));
+  userRouter.get('/', (req, res) => {
+    Users.findAll().then(users => console.log(users))
+    res.send('sent')
+  })
+  userRouter.get('/:id', (req, res) => Users.findByPk(req.params.id).then(user => user ? res.json(user) : res.sendStatus(404)));
   userRouter.post('/login', (req, res) => {
     if (!req.body || !req.body.username || !req.body.password) {
       return res.sendStatus(401);
     }
-    users.findOne({ where: { userName: req.body.username } })
+    Users.findOne({ where: { userName: req.body.username } })
       .then(user => {
         if (!!user && req.body.password === user.password) {
           // Generate JWT
