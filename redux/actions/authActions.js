@@ -26,7 +26,7 @@ export const login = (formData) => {
       if (res.status !== 200) {
         dispatch({ type: LOG_IN_FAIL, payload: true })
       }
-      return axios.post('http://localhost:7000/api/users/verify-login', {
+      return axios.post('/api/users/verify-login', {
         headers: {
           'Authorization': `Bearer ${res.data.token}`,
         }
