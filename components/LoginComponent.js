@@ -19,8 +19,6 @@ import {
 
 const LoginComponent = (props) => {
 
-  console.log("LOGINCOMPONENT", props)
-
   const errorUi = (
     <Row>
       <Col>

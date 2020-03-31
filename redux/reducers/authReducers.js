@@ -24,16 +24,36 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOG_IN_SUCCESS:
-      return { ...state, loggedIn: true, loggedOut: false, username: action.payload, error: null }
+      return {
+        ...state,
+        loggedIn: true,
+        loggedOut: false, 
+        username: action.payload, 
+        error: null,
+        showModal: true,
+        modalMessage: "Login Success!"
+      }
       break
     case LOG_OUT_SUCCESS:
-      return { ...state, loggedIn: false, loggedOut: true, error: null }
+      return { ...state, 
+        loggedIn: false, 
+        loggedOut: true, 
+        error: null,
+        showModal: true,
+        modalMessage: "You have successfully logged out."
+      }
       break
     case LOG_IN_FAIL:
       return { ...state, loggedIn: false, loggedOut: true, error: action.payload }
       break
     case LOG_OUT_FAIL:
-      return { ...state, loggedIn: true, loggedOut: false, error: action.payload }
+      return { ...state, 
+        loggedIn: true, 
+        loggedOut: false, 
+        error: action.payload,
+        showModal: true,
+        modalMessage: "Log out failed."
+      }
       break
     case ADD_TO_FORM:
       return { ...state, formData: { ...state.formData, ...action.payload }, error: null }

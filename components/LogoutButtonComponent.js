@@ -9,7 +9,7 @@ class LogoutButtonComponent extends Component {
 
   render() {
     return (
-      <Button onClick={this.props.logout()}>Logout</Button>
+      <Button onClick={() => this.props.logout()}>Logout</Button>
     );
   }
 }
@@ -22,5 +22,5 @@ const mapDispatchToProps = {
   logout
 }
 
-LogoutButtonComponent = connect(mapStateToProps, mapDispatchToProps)(LogoutButtonComponent);
+LogoutButtonComponent = connect(state => state, mapDispatchToProps)(LogoutButtonComponent);
 export default LogoutButtonComponent;

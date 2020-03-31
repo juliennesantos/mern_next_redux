@@ -69,7 +69,7 @@ export const addToForm = (data) => {
 
 export const toggleModal = (isModalVisible) => {
   return (dispatch) => {
-    dispatch({ type: TOGGLE_MODAL, payload: !isModalVisible })
+    dispatch({ type: TOGGLE_MODAL, payload: isModalVisible })
   }
 }
 

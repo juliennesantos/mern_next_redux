@@ -24,11 +24,6 @@ class Page extends Component {
     // this.props.verifyLogin()
   }
 
-  loginSuccessHandler() {
-    this.props.setModalMessage('Login success!');
-    this.props.toggleModal(true);
-  }
-
   logoutFailureHandler() {
     this.props.setModalMessage('Logout failed.');
     this.props.toggleModal(true);
@@ -43,10 +38,7 @@ class Page extends Component {
       </Row>
       <Row>
         <Col className="text-center">
-          {/* <LogoutButtonComponent
-            onLogout={() => this.logoutSuccessHandler()}
-            onLogoutFail={() => this.logoutFailureHandler()}
-          ></LogoutButtonComponent> */}
+          <LogoutButtonComponent />
         </Col>
       </Row>
     </Container>
