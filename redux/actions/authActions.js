@@ -12,34 +12,37 @@ import {
 import axios from 'axios'
 
 export const login = (formData) => {
+  console.log("LOGIN", formData)
   return (dispatch) => {
-    axios.post(`/api/users/login`, {
-      ...formData
-    },
-      {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }
-      })
-      .then(res => {
-        if (res.status !== 200) {
-          dispatch({ type: LOG_IN_FAIL, payload: true })
-        }
-        return axios.post('/api/users/verify-login')
-      })
-      .then(res => {
-        if (res.status !== 200) {
-          dispatch({ type: LOG_IN_FAIL, payload: true })
-        }
-        return res.json();
-      })
-      .then(({ username }) => {
-        dispatch({ type: LOG_IN_SUCCESS, payload: username })
-      })
-      .catch(e => {
+    axios.post(`/api/users/login`, formData,
+    {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(res => {
+      console.log(res)
+      if (res.status !== 200) {
         dispatch({ type: LOG_IN_FAIL, payload: true })
-      });
+      }
+      return axios.post('http://localhost:7000/api/users/verify-login', {
+        headers: {
+          'Authorization': `Bearer ${res.data.token}`,
+        }
+      })
+    })
+    .then(res => {
+      console.log(res)
+      if (res.status !== 200) {
+        dispatch({ type: LOG_IN_FAIL, payload: true })
+      }
+      dispatch({ type: LOG_IN_SUCCESS, payload: formData.username })
+    })
+    .catch(e => {
+      console.log(e)
+      dispatch({ type: LOG_IN_FAIL, payload: true })
+    });
   }
 }
 
@@ -77,13 +80,12 @@ export const setModalMessage = (input) => {
 }
 
 export const verifyLogin = (cookies) => dispatch => {
-  axios.post('/api/users/verify-login', {
+  axios.post('http://localhost:7000/api/users/verify-login', {
     headers: {
       'Authorization': `Bearer ${cookies ? cookies['bzaartraining_id_token'] : ""}`,
     }
   })
     .then(res => {
-      console.log(res.json())
       if (res.status == 200) {
         dispatch({ type: VERIFY_LOGIN_SUCCESS, payload: res })
       }

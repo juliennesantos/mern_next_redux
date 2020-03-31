@@ -45,14 +45,11 @@ const reducer = (state = initialState, action) => {
       return { ...state, modalMessage: action.payload, error: null }
       break
     case VERIFY_LOGIN_SUCCESS:
-      console.log('pass', action.payload);
-      return state
       return { ...state, isLoginVerified: action.payload, error: null }
       break
     case VERIFY_LOGIN_FAIL:
-      console.log('fail', action.payload);
-      return state
-      return { ...state, isLoginVerified: action.payload, error: null }
+      console.log("failed")
+      return { ...state, loggedIn: true, loggedOut: false, username: action.payload, error: null }
       break
     default:
       return state

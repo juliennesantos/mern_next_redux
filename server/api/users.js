@@ -1,26 +1,23 @@
 const express = require('express');
-const { Users } = require('../database/models');
+const { User } = require('../database/models');
 const jwt = require('jsonwebtoken');
 
 module.exports = (router) => {
   const userRouter = express.Router();
 
-  userRouter.get('/', (req, res) => {
-    Users.findAll().then(users => console.log(users))
-    res.send('sent')
-  })
   userRouter.get('/:id', (req, res) => Users.findByPk(req.params.id).then(user => user ? res.json(user) : res.sendStatus(404)));
+
   userRouter.post('/login', (req, res) => {
     if (!req.body || !req.body.username || !req.body.password) {
       return res.sendStatus(401);
     }
-    Users.findOne({ where: { userName: req.body.username } })
+    User.findOne({ where: { userName: req.body.username } })
       .then(user => {
         if (!!user && req.body.password === user.password) {
           // Generate JWT
           const token = jwt.sign({ userId: user.id, username: user.userName }, process.env.SECRET);
           res.cookie('bzaartraining_id_token', token, { expires: new Date(Date.now() + 3600000), httpOnly: true });
-
+          
           return res.status(200).send({ userId: user.id, token });
         } else {
           return res.sendStatus(401);
@@ -43,6 +40,7 @@ module.exports = (router) => {
     }
     try {
       const { userId, username } = jwt.verify(token, process.env.SECRET);
+      console.log(userId, username, token)
       res.json({ userId, username });
     } catch (e) {
       res.sendStatus(401);
